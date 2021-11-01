@@ -5,6 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "MemoireUI",
+    platforms: [
+        .macOS(.v12),
+        .iOS(.v15)
+    ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -20,7 +24,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "MemoireUI",
-            dependencies: []),
+            dependencies: [],
+            resources: [.process("MFont/Resources"),
+                        .process("Resources/MUI.xcassets")]),
         .testTarget(
             name: "MemoireUITests",
             dependencies: ["MemoireUI"]),
