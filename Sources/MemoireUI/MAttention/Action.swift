@@ -16,6 +16,19 @@ public enum ActionType: Int,CaseIterable{
     case destruction
 }
 
+extension ActionType{
+     var tintColor: Color{
+        switch self {
+        case .prominence:
+            return .accentColor
+        case .cancellation:
+            return .mOrange4
+        case .destruction:
+            return .mRed4
+        }
+    }
+}
+
 /// 用来控制Button渲染的类型
 public struct Action: Identifiable{
     public init(id: UUID = UUID(), title: Text,type: ActionType? = nil, action: @escaping () -> Void) {
@@ -33,6 +46,9 @@ public struct Action: Identifiable{
     ///对应回调函数的类型，nil则视为无类型，使用默认的样式进行渲染
     public var type: ActionType?
     
+    public var tintColor: Color{
+        type?.tintColor ?? .mBlue4
+    }
 }
 
 extension View{

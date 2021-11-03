@@ -8,10 +8,14 @@
 
 ## Topics
 
-### UI组件
+### 工具集
 
 - <doc:MAttention>
 - <doc:MFontDescription>
+
+### UI组件
+
+- ``MHaptic`` 
 
 ### 设计规范
 

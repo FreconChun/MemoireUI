@@ -38,19 +38,28 @@ struct AlertView: View {
                 ForEach(data.controls,id:\.id){control in
                     Button {
                         control.action()
+                        attentionCenter.removeAlert(data: data)
                     } label: {
+                        HStack{
+                            Spacer()
                         control.title
+                            .foregroundColor(control.tintColor)
+                            Spacer()
+                        }.contentShape(Rectangle())
                     }
                     .buttonStyle(.borderless)
                     .controlSize(.regular)
                     .padding(10)
+                    .onAppear {
+                        print(control)
+                    }
                     
                     Spacer(minLength: 0)
                     
                 }
                 }
-                .foregroundColor(.accent.changeMore(colorScheme: colorScheme,amount:0.3))
-                .mfont(size: .caption2)
+//                .foregroundColor(.accent.changeMore(colorScheme: colorScheme,amount:0.3))
+                .mfont(size: .caption2,weight:.semiBold)
                 .background(.quaternary,in:Rectangle())
             }
            
@@ -90,6 +99,9 @@ struct AlertView: View {
                 
 
             }    .padding(20)
+            .onAppear {
+                MHaptic.alert()
+            }
     }
 }
 

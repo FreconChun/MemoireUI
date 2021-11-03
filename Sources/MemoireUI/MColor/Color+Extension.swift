@@ -34,11 +34,11 @@ extension Color{
     public static var mGreen4 : Self{ Color("Green4",bundle: .module) }
     
     public static var mGrey1 : Self{ Color("Grey1",bundle: .module) }
-    public static var mGrey2 : Self{ Color("Grey1",bundle: .module) }
-    public static var mGrey3 : Self{ Color("Grey1",bundle: .module) }
-    public static var mGrey4 : Self{ Color("Grey1",bundle: .module) }
-    public static var mGrey5 : Self{ Color("Grey1",bundle: .module) }
-    public static var mGrey6 : Self{ Color("Grey1",bundle: .module) }
+    public static var mGrey2 : Self{ Color("Grey2",bundle: .module) }
+    public static var mGrey3 : Self{ Color("Grey3",bundle: .module) }
+    public static var mGrey4 : Self{ Color("Grey4",bundle: .module) }
+    public static var mGrey5 : Self{ Color("Grey5",bundle: .module) }
+    public static var mGrey6 : Self{ Color("Grey6",bundle: .module) }
     
     public static var mOrange1 : Self{ Color("Orange1",bundle: .module) }
     public static var mOrange2 : Self{ Color("Orange2",bundle: .module) }

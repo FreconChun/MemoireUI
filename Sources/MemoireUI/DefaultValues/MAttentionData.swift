@@ -8,11 +8,24 @@
 import SwiftUI
 
 let ids = [UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID()]
+let updateStoredAssetsID = UUID()
+let deleteStoredAssetsID = UUID()
 
 extension AlertViewData{
     ///隐私政策更改
     public static var changePolicyAlertData:Self {  AlertViewData(id: ids[0], title: LocalizedStringKey("隐私政策更新"), content: Text("我们的隐私政策发生变化，请您及时关注!"), controls: [
         Action(title: Text("前往查看"), action: { })])
+    }
+    
+    ///删除资料库通知
+    public static func deleteStoredAssetsAlertData(content: String,deleteAction:@escaping () -> Void) -> Self {  AlertViewData(id: deleteStoredAssetsID, title: LocalizedStringKey("确认删除？"), content: Text("删除《\(Text(LocalizedStringKey(content)).bold())》资源文件，此操作不影响您的Memoire Book"), controls: [
+        Action(title: Text("确认删除"),type:.destruction, action: deleteAction)])
+    }
+    
+    ///更新资料库通知
+    public static func updateStoredAssets(content: String,resumeAction: @escaping() -> Void) -> Self{
+        AlertViewData(id: updateStoredAssetsID, title: LocalizedStringKey("确认与云端同步？"), content: Text("同步《\(Text(LocalizedStringKey(content)).bold())》资源文件，此操作保持您本地资料库和云端一致，不影响您的Memoire Book"), controls: [
+            Action(title: Text("确认同步"),type:.prominence, action: resumeAction)])
     }
 }
 
