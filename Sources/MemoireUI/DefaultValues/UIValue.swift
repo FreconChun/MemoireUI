@@ -28,8 +28,21 @@ extension CGFloat{
     public static var buttonBorder: Self{ 7 }
     
     public static var iconSmall: Self{ 30 }
+    
+    public static var iconMedium: Self {60}
+    
+    public static var iconLarge: Self {80}
+    
+    public static var radius: Self{15}
+    
+    public static var radiusL: Self{20}
+    
+    #if os(iOS)
+    public static var  defaultUISCreenHeight: Self {UIScreen.main.bounds.height}
+    public static var  defaultUISCreenWidth:Self { UIScreen.main.bounds.width}
+    #endif
 }
 
 
-let errorPlaceHolder: String = "出现了一些问题"
-let errorPlaceHolderLocalized: LocalizedStringKey = LocalizedStringKey(errorPlaceHolder)
+public let errorPlaceHolder: String = "出现了一些问题"
+public let errorPlaceHolderLocalized: LocalizedStringKey = LocalizedStringKey(errorPlaceHolder)

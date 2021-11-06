@@ -54,30 +54,36 @@ public struct Action: Identifiable{
 extension View{
     ///提供不同类型Action的渲染方式
     @ViewBuilder
-    func buttonStyle(of type: ActionType?) -> some View{
+    public func buttonStyle(of type: ActionType?,disabled: Bool = false) -> some View{
+       
         if let type = type {
             switch type {
             case .prominence:
-                self.tint(.accentColor).buttonStyle(.borderedProminent)
+                self.tint(disabled ? .mGrey3.opacity(0.5) : .accentColor)
+                    .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.roundedRectangle(radius: .buttonBorder))
+                    .disabled(disabled)
             case .cancellation:
-                self.tint(.mOrange4)
+                self.tint(disabled ? .mGrey3.opacity(0.5) : .mOrange4)
                     .buttonStyle(.bordered)
                 
                     .buttonBorderShape(.roundedRectangle(radius: .buttonBorder))
                     .background(.bar,in:RoundedRectangle(cornerRadius: .buttonBorder))
+                    .disabled(disabled)
             case .destruction:
-                self.tint(.mRed4)
+                self.tint(disabled ? .mGrey3.opacity(0.5) : .mRed4)
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.roundedRectangle(radius: .buttonBorder))
+                    .disabled(disabled)
             }
         }else{
             self
-                .tint(.mBlue4)
+                .tint(disabled ? .mGrey3.opacity(0.5) : .mBlue4)
                 .buttonStyle(.bordered)
             
                 .buttonBorderShape(.roundedRectangle(radius: .buttonBorder))
                 .background(.bar,in:RoundedRectangle(cornerRadius: .buttonBorder))
+                .disabled(disabled)
         }
     }
 }

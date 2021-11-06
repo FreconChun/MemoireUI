@@ -8,13 +8,82 @@
 import SwiftUI
 import CloudKit
 
+
+public struct ImageInfo: Codable,Identifiable{
+    public let urls: Urls
+    public let id = UUID()
+}
+
+public struct Urls:Codable{
+    let regular: String
+    let small: String
+    let  thumb: String
+    public var smallUrl:URL?{
+        return URL(string: small)
+    }
+    public var regularUrl: URL?{
+        return URL(string: regular)
+    }
+    public var thumbUrl: URL?{
+        return URL(string: thumb)
+    }
+}
+
+
 ///处理和云端共有数据库通信
 public class MemoireCloud{
     ///数据源
-    let dataBase = CKContainer(identifier: "iCloud.com.frecon.memoire").publicCloudDatabase
+    public let dataBase = CKContainer(identifier: "iCloud.com.frecon.memoire").publicCloudDatabase
     
     ///单一入口
-    static var shared = MemoireCloud()
+    public static var shared = MemoireCloud()
+    
+    
+    public func unsplashImageInfos() async throws -> [ImageInfo]{
+        let apiPath = "https://api.unsplash.com/photos/?client_id=ceDbW_i73HeeNBpbcqpFb05_r_QINCrCZX3Au591lvY&order_by=popular&page=1&per_page=9"
+        let (data,_) = try await  URLSession.shared.data(from: URL(string: apiPath )!, delegate: nil)
+
+            do{
+                return try JSONDecoder().decode([ImageInfo].self, from: data)
+            }catch let error{
+                throw error
+            }
+    }
+    
+public    func unsplashImageURLSmall() async throws -> [URL]{
+    let apiPath = "https://api.unsplash.com/photos/?client_id=ceDbW_i73HeeNBpbcqpFb05_r_QINCrCZX3Au591lvY&order_by=popular&page=1&per_page=9"
+//        var request = URLRequest(url: URL(string: "https://api.unsplash.com/photos/?client_id=ceDbW_i73HeeNBpbcqpFb05_r_QINCrCZX3Au591lvY")!)
+//           // request.addValue("ceDbW_i73HeeNBpbcqpFb05_r_QINCrCZX3Au591lvY", forHTTPHeaderField: "client_id")
+//            request.addValue("popular", forHTTPHeaderField: "order_by")
+//            request.addValue("1", forHTTPHeaderField: "page")
+//            request.addValue("10", forHTTPHeaderField: "per_page")
+    
+    let (data,_) = try await  URLSession.shared.data(from: URL(string: apiPath )!, delegate: nil)
+    
+    // if let response = urlResponse as? HTTPURLResponse{
+        do{
+            //try data.write(to: URL(string: screenshotDirectory)!.appendingPathComponent("unsplashData.txt"))
+            let picInfo = try JSONDecoder().decode([ImageInfo].self, from: data)
+            return picInfo.compactMap{$0.urls.smallUrl}
+        }catch let error{
+            throw error
+        }
+        
+    }
+//    else{
+//        return []
+//    }
+    
+
+//        URLSession.shared.dataTask(with: request) { data, response, error in
+//            print("here")
+//            print("\(String(describing: error))")
+//            print("\(String(describing: data))")
+//            print("\(String(describing: response))")
+//        }
+   //     URLSession.shared.data
+    
+    
     
     func loadAssets(of group: MAssetGroup) async throws -> [(id:String,name:String,data:CKAsset)]{
         

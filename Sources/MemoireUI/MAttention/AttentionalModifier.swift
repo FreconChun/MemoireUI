@@ -17,6 +17,10 @@ public struct AttentionalModifier: ViewModifier{
     //
     ///控制是否将背景进行虚化和相应功能
     var isFullScreenCover: Bool{
+        !attentionCenter.alertData.isEmpty || !attentionCenter.dialogData.isEmpty || !attentionCenter.coverViews.isEmpty
+    }
+    
+    var isFullScreenAlert: Bool{
         !attentionCenter.alertData.isEmpty || !attentionCenter.dialogData.isEmpty
     }
     
@@ -24,17 +28,44 @@ public struct AttentionalModifier: ViewModifier{
         ZStack{
             content
             
-                .blur(radius: isFullScreenCover ? 15 : 0)
+                .blur(radius: isFullScreenCover ? 20 : 0)
                 .disabled(isFullScreenCover)
+      
+         
+         
+            ForEach(   Array(zip(attentionCenter.coverViews.indices, attentionCenter.coverViews)), id: \.0){index,view in
+                if isFullScreenCover{
+                  Background().opacity(0.5).ignoresSafeArea().transition(.opacity.animation(.spring()))
+                  
+                }
+                view.view()
+                    .zIndex(Double(index))
+                    .blur(radius: (index < attentionCenter.coverViews.count - 1) ? 20 : 0)
+                    
+            }
+            if isFullScreenAlert{
+            Rectangle().foregroundStyle(.thinMaterial).ignoresSafeArea().transition(.opacity.animation(.spring()))
+                   // .zIndex(9)
+            }
             ForEach(attentionCenter.alertData){alert in
+                VStack{
+                    Spacer()
                 AlertView(data:alert)
+                    Spacer()
+                }
+             
                    // .background(BackgroundClearView())
-            }.zIndex(1).transition(.asymmetric(insertion: .scale(scale: 1.5).combined(with: .opacity).animation(.spring()), removal: .opacity.animation(.spring().speed(2))))
+            }.zIndex(1000)
+     
+                .transition(.asymmetric(insertion: .scale(scale: 1.5).combined(with: .opacity).animation(.spring()), removal: .opacity.animation(.spring().speed(2))))
+          
+            
             
             
             ForEach(attentionCenter.dialogData){dialog in
                 DialogView(data:dialog)
-            }.zIndex(1).transition(.asymmetric(insertion: .scale(scale: 1.5).combined(with: .opacity).animation(.spring()), removal: .move(edge: .bottom).animation(.spring().speed(2))))
+            }.zIndex(1000)
+                .transition(.asymmetric(insertion: .scale(scale: 1.5).combined(with: .opacity).animation(.spring()), removal: .move(edge: .bottom).animation(.spring().speed(2))))
             
             //                .fullScreenCover(item: Binding(get: {
             //                    alertData
@@ -71,6 +102,7 @@ public struct AttentionalModifier: ViewModifier{
                 Spacer()
             }
             .padding(5)
+            .zIndex(1000)
             
         }
         //        .onChange(of: attentionCenter.bannerData) { newValue in
@@ -89,6 +121,19 @@ extension View{
     }
 }
 
+public struct MView: Identifiable,Equatable{
+   public init(id: UUID, view: @escaping () -> AnyView) {
+        self.id = id
+        self.view = view
+    }
+    
+    public static func == (lhs: MView, rhs: MView) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    public var id: UUID
+    var view: () -> AnyView
+}
 
 ///视图的全局对象，向其中添加值即可显示对应Attention，移除值会使对应attention消失
 ///除了Banner都不需要代码控制消失
@@ -100,7 +145,7 @@ public class AttentionCenter: ObservableObject{
     @Published public var bannerData: [BannerViewData] = []
     @Published public var dialogData: [DialogData] = []
     @Published public var largeBannerData: BannerViewData? = nil
-    
+    @Published public var coverViews: [MView] = []
     public func addAlert(data: AlertViewData) {
         alertData.append(data)
     }
@@ -121,6 +166,24 @@ public class AttentionCenter: ObservableObject{
         
     }
     
+    private func addOverlay<T: View>(_ content: @escaping () -> T){
+        coverViews.append(MView(id: UUID(), view: {content().eraseToAnyView()}))
+    }
+    
+    ///注意：调用此函数需要自行控制MView的ID，用ID来关闭视图
+    public func addOverlay(_ content: MView){
+        withAnimation(){
+        coverViews.append(content)
+        }
+    }
+    public func removeOverlay(id: UUID){
+        withAnimation(){
+        coverViews.removeAll(where: {$0.id
+             == id
+        })
+        }
+    }
+    
     public func removeBanner(data: BannerViewData){
         withAnimation(.spring().speed(0.6)){
             bannerData.removeAll(where: {$0.id == data.id})
@@ -134,6 +197,9 @@ public class AttentionCenter: ObservableObject{
         alertData.removeAll(where: {$0.id == id})
     }
     
+//    public func removeOverlay(id: UUID){
+//        dialogData.removeAll{$0.id == id}
+//    }
     public func addDialog(data: DialogData){
         dialogData.uniqueAppend(element: data)
     }

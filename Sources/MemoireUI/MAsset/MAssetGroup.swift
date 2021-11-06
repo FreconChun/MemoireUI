@@ -64,6 +64,7 @@ public struct MAssetGroup:Identifiable,Codable{
         recordName = record.recordID.recordName
     }
     
+
     /// 删除所有同一类型的资源文件
     /// - Returns: true： 成功删除，false：遇到错误
     public func deleteAsset() -> Bool{

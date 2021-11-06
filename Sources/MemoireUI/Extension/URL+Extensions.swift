@@ -15,6 +15,11 @@ extension URL {
         }
         return try checkResourceIsReachable()
     }
+    
+    public func allSubDirectories() -> [URL]{
+        let urls = FileManager.default.enumerator(at: self, includingPropertiesForKeys: nil)?.allObjects as? [URL]
+        return urls ?? []
+    }
 
     /// returns total allocated size of a the directory including its subFolders or not
     public func directoryTotalAllocatedSize(includingAllSubfolders: Bool = false) throws -> Int? {

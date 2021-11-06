@@ -9,11 +9,13 @@ import SwiftUI
 
 extension String{
     ///输出idWITHNAMEOFname
+    ///id + "WITHNAMEOF" + name
     public static func generateFileName(id: String,name: String) -> Self{
         return id + "WITHNAMEOF" + name
     }
     
     ///将generateFileName的字符串解开
+    ///separatedBy: "WITHNAMEOF"
     public func spiltFileName() -> [String]{
         self.components(separatedBy: "WITHNAMEOF")
     }

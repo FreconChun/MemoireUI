@@ -8,7 +8,28 @@
 import SwiftUI
 
 
+extension View{
+    public func dialogContentStyle() -> some View{
+        self.padding()
+        .foregroundStyle(.secondary)
+        .background(.regularMaterial,in: RoundedRectangle(cornerRadius: 20))
+    }
+    
+    public func dialogButtonStyle(type: ActionType? = nil,disabled: Bool = false) -> some View{
+        self .controlSize(.large)
+            .buttonStyle(of: type,disabled: disabled)
+            .transition(.move(edge: .bottom).animation(.spring()).combined(with: .opacity.animation(.spring())))
+    }
+    
+    
+}
 
+extension View{
+    public func dialogButtonLabelStyle() -> some View{
+        self.frame(maxWidth:300)
+            .mfont(size: .caption2, type: .NotoSerifSC, weight: .semiBold)
+    }
+}
 
 
 struct DialogView: View {
@@ -21,10 +42,8 @@ struct DialogView: View {
     var body: some View {
         VStack{
         Spacer()
-            data.content
-                .padding()
-                .foregroundStyle(.secondary)
-                .background(.regularMaterial,in: RoundedRectangle(cornerRadius: 20))
+            data.content.dialogContentStyle()
+              
               
             
             VStack{
@@ -34,7 +53,7 @@ struct DialogView: View {
                     
                 } label: {
                     control.title.frame(maxWidth:300)
-                        .mfont(size: .caption2, type: .NotoSerifSC, weight: .semiBold)
+                        .dialogButtonLabelStyle()
                 }
                 .controlSize(.large)
                 .buttonStyle(of: control.type)
@@ -47,13 +66,9 @@ struct DialogView: View {
                         
                     } label: {
                         Text("Confirm after \(Int(remainingTime))s")
-                            .frame(maxWidth:300)
-                            .mfont(size: .caption2, type: .NotoSerifSC, weight: .semiBold)
+                            .dialogButtonLabelStyle()
                     }
-                    .controlSize(.large)
-                    .buttonStyle(of: nil)
-                    .disabled(true)
-                    .transition(.move(edge: .bottom).animation(.spring()))
+                    .dialogButtonStyle()
                     .matchedGeometryEffect(id: data.controls.first?.id, in: dialogNamespace)
                 }
                 let control =  Action(title: Text("Cancel"), action: {
@@ -62,12 +77,9 @@ struct DialogView: View {
                 Button {
                     control.action()
                 } label: {
-                    control.title.frame(maxWidth:300)
-                        .mfont(size: .caption2, type: .NotoSerifSC, weight: .semiBold)
+                    control.title.dialogButtonLabelStyle()
                 }
-                .controlSize(.large)
-                .buttonStyle(of: control.type)
-                .transition(.move(edge: .bottom).animation(.spring()))
+                .dialogButtonStyle(type:control.type)
                
             }
           

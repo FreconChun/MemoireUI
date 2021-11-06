@@ -10,8 +10,16 @@ import SwiftUI
 let ids = [UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID()]
 let updateStoredAssetsID = UUID()
 let deleteStoredAssetsID = UUID()
+let errorDownloadFromWebBannerID = UUID()
 
 extension AlertViewData{
+    
+    
+    ///隐私政策更改
+    public static func deleteCache(action:@escaping () -> Void) -> Self {  AlertViewData(id: ids[0], title: LocalizedStringKey("确认删除应用缓存？"), content: Text("这可能会导致部分功能发生变化"), controls: [
+        Action(title: Text("确认"), action: action)])
+    }
+    
     ///隐私政策更改
     public static var changePolicyAlertData:Self {  AlertViewData(id: ids[0], title: LocalizedStringKey("隐私政策更新"), content: Text("我们的隐私政策发生变化，请您及时关注!"), controls: [
         Action(title: Text("前往查看"), action: { })])
@@ -30,6 +38,11 @@ extension AlertViewData{
 }
 
 extension BannerViewData{
+    
+    ///从云端下载出现问题
+    public static var errorDownloadFromWeb: Self { BannerViewData(id: errorDownloadFromWebBannerID, title: LocalizedStringKey("下载失败"),autoDismiss:false, subTitle: LocalizedStringKey("从云端下载资源失败"), icon: Image(systemName: "exclamationmark"))}
+    
+    
     ///从云端下载数据
     public static var loadFromCloudBannerData: Self { BannerViewData(id: ids[1], title: LocalizedStringKey("正在下载"),autoDismiss:false, subTitle: LocalizedStringKey("从云端下载资源库"), icon: Image(systemName: "icloud.fill"))}
     

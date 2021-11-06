@@ -20,9 +20,8 @@ public class MAssetCenter: ObservableObject{
     public init(){}
     
  ///返回Masset目录下的资源总大小
-    public func totalStorage() -> Text {
+    public static func totalStorage() -> Text {
         do{
-   
             let storage = try assetsRootURL.directoryTotalAllocatedSize(includingAllSubfolders: true)
            //使用MB和GB来描述数据
             let formatter = ByteCountFormatter()
@@ -131,4 +130,14 @@ public class MAssetCenter: ObservableObject{
         allAssetGroup.first(where: {$0.id == asset.id})?.status ?? .noStored
     }
     
+    ///获取GroupName中包含给定参数 的所有资源路径
+public    func getAllAssetURLs(groupName:String) -> [URL]{
+        return assetsRootURL
+            .allSubDirectories()
+            .filter{ $0.path.spiltFileName().contains(groupName) }
+            .reduce([]){ partialResult, url in
+            partialResult + url.allSubDirectories()
+        }
+    }
 }
+

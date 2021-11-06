@@ -9,7 +9,7 @@ import Foundation
 #if DEBUG
 import SwiftUI
 
-private let screenshotDirectory = "/Users/lihaokun/Desktop"
+let screenshotDirectory = "/Users/lihaokun/Desktop"
 
 struct PreviewScreenshot: ViewModifier {
     struct LocatorView: UIViewRepresentable {
