@@ -19,10 +19,12 @@ extension View{
     }
     ///将视图包装成截图的样式
     public func screenshotStye() -> some View{
-        self .cornerRadius(20)
+        self
+            .compositingGroup()
+            .cornerRadius(20)
             .scaleEffect(0.9)
             .shadow(color: .gray.opacity(0.4), radius: 10, x: 0, y: 0)
-            .clipShape(Rectangle())
+            //.clipShape(Rectangle())
     }
     
 }

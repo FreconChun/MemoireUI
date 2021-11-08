@@ -220,3 +220,9 @@ public class AttentionCenter: ObservableObject{
         }
     }
 }
+
+extension View{
+    public func eraseToAnyView() -> AnyView{
+        AnyView(self)
+    }
+}
