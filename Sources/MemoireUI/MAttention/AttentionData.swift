@@ -38,12 +38,13 @@ public struct DialogData: Identifiable{
 
 ///Banner的数据模型
 public struct BannerViewData: Identifiable{
-    public init(id: UUID = UUID(), title: LocalizedStringKey, autoDismiss: Bool = true,subTitle: LocalizedStringKey? = nil, icon: Image) {
+    public init(id: UUID = UUID(), title: LocalizedStringKey, autoDismiss: Bool = true,subTitle: LocalizedStringKey? = nil, icon: Image,tintColor:Color = .primary) {
         self.id = id
         self.title = title
         self.subTitle = subTitle
         self.icon = icon
         self.autoDismiss = autoDismiss
+        self.tintColor = tintColor
     }
     
     public var id: UUID = UUID()
@@ -51,4 +52,5 @@ public struct BannerViewData: Identifiable{
     public var subTitle: LocalizedStringKey?
     public var icon: Image
     public var autoDismiss: Bool = true
+    public var tintColor: Color = .primary
 }

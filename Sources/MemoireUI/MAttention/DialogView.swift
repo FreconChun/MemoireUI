@@ -34,7 +34,7 @@ extension View{
 
 struct DialogView: View {
     @Namespace var dialogNamespace
-    var data = DialogData.singOutDialog
+    var data = DialogData.signOutDialog(logoutAction: {})
     @EnvironmentObject var attentionCenter: AttentionCenter
     @State var remainingTime: CGFloat = 5
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -50,7 +50,13 @@ struct DialogView: View {
                 if showControl{
             ForEach(data.controls){control in
                 Button {
-                    
+                    withAnimation(){
+                    let controlA =  Action(title: Text("Cancel"), action: {
+                        attentionCenter.removeDialog(data: data)
+                    })
+                    controlA.action()
+                        control.action()
+                    }
                 } label: {
                     control.title.frame(maxWidth:300)
                         .dialogButtonLabelStyle()
@@ -69,6 +75,7 @@ struct DialogView: View {
                             .dialogButtonLabelStyle()
                     }
                     .dialogButtonStyle()
+                    .disabled(true)
                     .matchedGeometryEffect(id: data.controls.first?.id, in: dialogNamespace)
                 }
                 let control =  Action(title: Text("Cancel"), action: {

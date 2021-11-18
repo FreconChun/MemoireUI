@@ -24,12 +24,13 @@ extension Text{
     }
 }
 
+
 extension CGFloat{
     public static var buttonBorder: Self{ 7 }
     
     public static var iconSmall: Self{ 30 }
     
-    public static var iconMedium: Self {60}
+    public static var iconMedium: Self {45}
     
     public static var iconLarge: Self {80}
     

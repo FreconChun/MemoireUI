@@ -14,7 +14,7 @@ private struct ScrollOffsetPreferenceKey: PreferenceKey {
     static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {}
 }
 
-///可以获取用户滑动位置进行相应操作
+///可以获取用户滑动位置进行相应操作的ScrollView
 public struct MScrollView<Content: View>: View {
     let axes: Axis.Set
     let showsIndicators: Bool

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PreviewScreenshot.swift
 //  
 //
 //  Created by 李昊堃 on 2021/10/31.
@@ -9,8 +9,10 @@ import Foundation
 #if DEBUG
 import SwiftUI
 
+///截图跟路径
 let screenshotDirectory = "/Users/lihaokun/Desktop"
 
+///使预览支持截图效果
 struct PreviewScreenshot: ViewModifier {
     struct LocatorView: UIViewRepresentable {
         let tag: Int

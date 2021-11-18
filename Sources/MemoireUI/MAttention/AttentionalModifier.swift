@@ -8,6 +8,10 @@
 import SwiftUI
 
 
+public protocol Attentional{
+    var attentionCenter: AttentionCenter { get set }
+}
+
 /// 对于不会中断用户当前操作的提示，在根视图上使用的Modifier，使得提示显示在根视图之上
 public struct AttentionalModifier: ViewModifier{
     @StateObject var attentionCenter = AttentionCenter()
@@ -35,11 +39,15 @@ public struct AttentionalModifier: ViewModifier{
          
             ForEach(   Array(zip(attentionCenter.coverViews.indices, attentionCenter.coverViews)), id: \.0){index,view in
                 if isFullScreenCover{
-                  Background().opacity(0.5).ignoresSafeArea().transition(.opacity.animation(.spring()))
+                    
+                    //      Background()
+                    Rectangle().foregroundStyle(.background)
+                        .opacity(0.2).ignoresSafeArea().transition(.opacity.animation(.spring()))
                   
                 }
                 view.view()
                     .zIndex(Double(index))
+                    .disabled(index < attentionCenter.coverViews.count - 1)
                     .blur(radius: (index < attentionCenter.coverViews.count - 1) ? 20 : 0)
                     
             }
@@ -166,14 +174,24 @@ public class AttentionCenter: ObservableObject{
         
     }
     
-    private func addOverlay<T: View>(_ content: @escaping () -> T){
-        coverViews.append(MView(id: UUID(), view: {content().eraseToAnyView()}))
+    ///可以通过removeAction手动控制视图关闭
+    public func addOverlay<T: View>(id: UUID,_ content: @escaping (_ removeAction: @escaping () -> Void ) -> T){
+        withAnimation(){
+            coverViews.append(MView(id: id, view: {content({self.removeOverlay(id: id)}).eraseToAnyView()}))
+        }
     }
     
-    ///注意：调用此函数需要自行控制MView的ID，用ID来关闭视图
-    public func addOverlay(_ content: MView){
+    public func addOverlay<T: View>(id: UUID,_ content: @escaping () -> T){
         withAnimation(){
-        coverViews.append(content)
+            coverViews.append(MView(id: id, view: {content().eraseToAnyView()}))
+        }
+    }
+    
+   // @available(*,deprecated)
+    ///注意：调用此函数需要自行控制MView的ID，用ID来关闭视图
+    func addOverlay(_ content: MView){
+        withAnimation(){
+            coverViews.append(content)
         }
     }
     public func removeOverlay(id: UUID){

@@ -34,6 +34,7 @@ extension Color{
     public static var mGreen4 : Self{ Color("Green4",bundle: .module) }
     
     public static var mGrey1 : Self{ Color("Grey1",bundle: .module) }
+    public static var mGrey1_5 : Self{ Color("Grey1.5",bundle: .module) }
     public static var mGrey2 : Self{ Color("Grey2",bundle: .module) }
     public static var mGrey3 : Self{ Color("Grey3",bundle: .module) }
     public static var mGrey4 : Self{ Color("Grey4",bundle: .module) }
@@ -54,4 +55,6 @@ extension Color{
     public static var mYellow2 : Self{ Color("Yellow2",bundle: .module) }
     public static var mYellow3 : Self{ Color("Yellow3",bundle: .module) }
     public static var mYellow4 : Self{ Color("Yellow4",bundle: .module) }
+    
+    public static var backgroundColor: Self{Color("Background",bundle:.module)}
 }

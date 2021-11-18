@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+///如果Text为空，输出Prompt
 public func PromptText(prompt: Text?,_ content: String) -> Text{
         if content.isEmpty,let prompt = prompt{
            return prompt

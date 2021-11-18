@@ -11,6 +11,9 @@ let ids = [UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID(),UUID()
 let updateStoredAssetsID = UUID()
 let deleteStoredAssetsID = UUID()
 let errorDownloadFromWebBannerID = UUID()
+let errorFileLoadBannerID = UUID()
+let noCameraPermissionBannerID = UUID()
+let noPhotosPermissionBannerID = UUID()
 
 extension AlertViewData{
     
@@ -35,9 +38,26 @@ extension AlertViewData{
         AlertViewData(id: updateStoredAssetsID, title: LocalizedStringKey("确认与云端同步？"), content: Text("同步《\(Text(LocalizedStringKey(content)).bold())》资源文件，此操作保持您本地资料库和云端一致，不影响您的Memoire Book"), controls: [
             Action(title: Text("确认同步"),type:.prominence, action: resumeAction)])
     }
+    
+
 }
 
 extension BannerViewData{
+    
+    ///相机权限获取失败
+    public static var noCameraPermission: Self{
+        BannerViewData(id: noCameraPermissionBannerID, title: LocalizedStringKey("需要相机权限"), autoDismiss: true, subTitle: nil, icon: Image(systemName:"camera.fill"),tintColor: .accentColor)
+    }
+    
+    
+    /// 相册权限获取失败
+    public static var noPhotosPermission: Self{
+        BannerViewData(id: noPhotosPermissionBannerID, title: LocalizedStringKey("需要照片访问权限"), autoDismiss: true, subTitle: nil, icon: Image(systemName:"photo.fill.on.rectangle.fill"),tintColor: .accentColor)
+    }
+    
+    ///文件导入失败
+    public static func errorFileImport(_ debugDescription: String) -> Self { BannerViewData(id: errorFileLoadBannerID, title: LocalizedStringKey("文件导入失败"),autoDismiss:false, subTitle: LocalizedStringKey(debugDescription), icon: Image(systemName: "exclamationmark"))}
+    
     
     ///从云端下载出现问题
     public static var errorDownloadFromWeb: Self { BannerViewData(id: errorDownloadFromWebBannerID, title: LocalizedStringKey("下载失败"),autoDismiss:false, subTitle: LocalizedStringKey("从云端下载资源失败"), icon: Image(systemName: "exclamationmark"))}
@@ -59,14 +79,15 @@ extension BannerViewData{
 }
 
 extension DialogData{
+    
     ///登出的提示内容
-    public static var singOutDialog: Self{
-        DialogData(id: ids[6], content:logoutDialog , controls: [Action(title: Text("Log Out"),type: .destruction, action: {})])
+    public static func signOutDialog(logoutAction: @escaping () -> Void) -> Self{
+        DialogData(id: ids[6], content:logoutDialog , controls: [Action(title: Text("Log Out"),type: .destruction, action: logoutAction)])
     }
 }
 
 ///登出的文本提示
-let logoutDialog: Text = Text(
+private let logoutDialog: Text = Text(
 """
 \(Text("Are you sure to ").mfont(size: .subheadline, weight: .semiBold).foregroundColor(.primary)) \(Text("Log Out").mfont(size: .subheadline, weight: .bold).foregroundColor(.mRed)) \(Text("?").mfont(size: .subheadline, weight: .semiBold).foregroundColor(.primary))
 

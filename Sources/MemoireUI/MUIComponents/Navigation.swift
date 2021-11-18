@@ -1,11 +1,13 @@
 //
-//  Styles.swift
+//  Navigation.swift
 //  
 //
 //  Created by 李昊堃 on 2021/11/5.
 //
 
 import SwiftUI
+
+/// 返回按钮的类型，包括返回和确认
 public enum NavigationControlType: Int{
     case back,check
     

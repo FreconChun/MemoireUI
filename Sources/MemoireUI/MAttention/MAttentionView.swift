@@ -52,7 +52,7 @@ public struct MAttentionView: View {
             Divider()
 
             Button {
-                attentionCenter.addDialog(data: .singOutDialog)
+                attentionCenter.addDialog(data: .signOutDialog(logoutAction: {}))
             } label: {
                 Text("Dialog").mfont(size: .body, weight: .bold)
             }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+///操作的类型，用来更改渲染的样式
 public enum ActionType: Int,CaseIterable{
     ///默认的推荐选项
     case prominence
@@ -17,6 +18,7 @@ public enum ActionType: Int,CaseIterable{
 }
 
 extension ActionType{
+    //主题色
      var tintColor: Color{
         switch self {
         case .prominence:
@@ -29,7 +31,7 @@ extension ActionType{
     }
 }
 
-/// 用来控制Button渲染的类型
+/// 用来控制Button的类型
 public struct Action: Identifiable{
     public init(id: UUID = UUID(), title: Text,type: ActionType? = nil, action: @escaping () -> Void) {
         self.id = id
@@ -39,6 +41,7 @@ public struct Action: Identifiable{
     }
     
     public var id: UUID = UUID()
+    
     ///标题，Text可以复合样式内插
     public var title: Text
     ///回调函数

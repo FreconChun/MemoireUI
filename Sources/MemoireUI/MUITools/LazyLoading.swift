@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+///异步加载视图
 public struct LazyLoadingModifier<PlaceHolder: View>:ViewModifier{
     @State var delayTime: Double = 2
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()

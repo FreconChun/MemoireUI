@@ -64,6 +64,7 @@ struct BannerView: View {
         .scaleEffect(bannerStyle == .small ? 0.8 : 1)
         .padding(.horizontal,bannerStyle == .small ? -5 : 0)
         .animation(.spring(), value: bannerStyle)
+        .foregroundColor(data.tintColor)
         .onReceive(timer) { _ in
             if data.autoDismiss{
                 if timeRemaining > 0 {

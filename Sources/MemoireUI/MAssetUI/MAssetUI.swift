@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import MemoireFoundation
 
 extension MAssetGroup{
     ///本地化组名
     public func label() -> Text{
-        return Text(LocalizedStringKey( name))
+        return Text(localizedName)
     }
     
     ///渲染缩略图
     @ViewBuilder
     public func thumbnailImage() -> some View{
-        AsyncImage(url: thumbnailURL, content: { image in
+        AsyncImage(url: thumbnailImageURL, content: { image in
             image.resizable().aspectRatio(contentMode: .fill)
         }, placeholder: {
             Image.placeholderImage.resizable().foregroundStyle(Color.accentColor, .secondary, .tertiary).aspectRatio(contentMode: .fill).padding().padding().background(Color.accentColor.opacity(0.3),in:RoundedRectangle(cornerRadius: 5)).padding()

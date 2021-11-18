@@ -18,7 +18,7 @@ extension View {
     }
 }
 
-
+///最近距离的rotation effect 防止套圈
 struct ShortRotation: ViewModifier {
     static var storage:[UUID:Angle] = [:]
     
